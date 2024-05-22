@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getItems } from '../services/api';
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/items')
-      .then(response => {
-        setItems(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the items!', error);
-      });
+    async function fetchItems() {
+      try {
+        const data = await getItems();
+        setItems(data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    }
+    fetchItems();
   }, []);
 
   return (
     <div>
-      <h1>Items</h1>
+      <h1>Item List</h1>
       <ul>
         {items.map(item => (
-          <li key={item.id}>{item.name}: {item.description}</li>
+          <li key={item._id}>{item.name}</li>
         ))}
       </ul>
     </div>
