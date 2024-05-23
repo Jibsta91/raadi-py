@@ -9,8 +9,17 @@ services:
     depends_on:
       - mongodb
 
+  user_service:
+    build:
+      context: ./user_service
+    ports:
+      - "8001:8001"
+    env_file: .env
+    depends_on:
+      - mongodb
+
   mongodb:
-    image: mongo:latest
+    image: mongo
     ports:
       - "27017:27017"
     volumes:
